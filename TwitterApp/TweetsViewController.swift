@@ -20,7 +20,7 @@ class TweetsViewController: UIViewController {
         
         TwitterClient.sharedInstance?.homeTimeline(success: { (tweets: [Tweet]) in
             self.tweets =  tweets
-            print("out of tweet")
+
             for tweet in tweets {
                  //print("\(tweet.text)")
                 print(tweet.text ?? 0)

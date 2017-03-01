@@ -38,7 +38,7 @@ class User: NSObject {
         get {
             let defaults =  UserDefaults.standard
             
-            let user =
+            //let user =
             return nil
         }
         
