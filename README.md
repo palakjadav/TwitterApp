@@ -10,12 +10,15 @@ The following **required** functionality is completed:
 
 - [X] User can sign in using OAuth login flow
 - [X] User can view last 20 tweets from their home timeline
+- [X] The current signed in user will be persisted across restarts
+- [X] In the home timeline, user can view tweet with the user profile picture, username, tweet text, and timestamp.
+- [X] Retweeting and favoriting should increment the retweet and favorite count.
 
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/wST2yIs.gifv' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://i.imgur.com/pUhXWZw.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
