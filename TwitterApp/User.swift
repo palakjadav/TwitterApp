@@ -14,21 +14,13 @@ class User: NSObject {
     var screenname: NSString?
     var profileUrl: NSURL?
     var tagline: NSString?
-    
     var dictionary: NSDictionary?
     
     init(dictionary: NSDictionary) {
-        
         self.dictionary = dictionary
         
         name = dictionary["name"] as? String as NSString?
         screenname = dictionary["screen_name"] as? String as NSString?
-        
-       /* let profileUrlString = dictionary["profile_image_url_https"] as? String
-        
-        if let profileUrlString = profileUrlString {
-            profileUrlString = NSURL(string: profileUrlString)
-        }*/
         
         let profileUrlString = dictionary["profile_image_url_https"] as? String
         if let profileUrlString = profileUrlString { profileUrl = NSURL(string: profileUrlString) }
@@ -37,7 +29,7 @@ class User: NSObject {
         
     }
     static var _currentUser: User?
-     static let userDidLogoutNotification =  "UserDidLogout"
+    static let userDidLogoutNotification =  "UserDidLogout"
     
     class var currentUser: User? {
         get {
@@ -67,7 +59,8 @@ class User: NSObject {
             
             }
             else {
-                defaults.set(nil, forKey:"currentUserData")
+                //defaults.set(nil, forKey:"currentUserData")
+                defaults.removeObject(forKey: "currentUserData")
 
             }
             //defaults.set(user, forKey: "currentUser")

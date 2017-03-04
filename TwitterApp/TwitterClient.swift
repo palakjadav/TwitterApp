@@ -11,22 +11,24 @@ import BDBOAuth1Manager
 
 class TwitterClient: BDBOAuth1SessionManager {
    
-    
     static let sharedInstance = TwitterClient(baseURL: NSURL(string:"https://api.twitter.com") as URL!, consumerKey: "RTy86eGBWShLGa92UMRDh4fUq", consumerSecret: "XXIc7DTGtoIPYzqv8GUIWOzz9khK61exQlaYFxlO4Rb3xz4S7L")
     
     var loginSuccess: (() -> ())?
     var loginFailure: ((NSError) -> ())?
     
-    
     func login(success: @escaping () -> (), failure: @escaping (NSError) -> ()) {
         
         loginSuccess = success
         loginFailure =  failure
-        TwitterClient.sharedInstance?.deauthorize()
+        //TwitterClient.sharedInstance?.deauthorize()
+        deauthorize()
+        
+        //TwitterClient.sharedInstance?.fetchRequestToken(withPath: "oauth/request_token", method: "GET", callbackURL: NSURL(string: "twitterapp://oauth")! as URL!, scope: nil, success: {
         
         TwitterClient.sharedInstance?.fetchRequestToken(withPath: "oauth/request_token", method: "GET", callbackURL: NSURL(string: "twitterapp://oauth")! as URL!, scope: nil, success: {
+
             (requestToken: BDBOAuth1Credential?) -> Void in
-            // print("I got a token!")
+             print("I got a token!")
             
             //            let url = URL(string: "https://api.twitter.com/oauth/authorize?oauth_token=\(requestToken!.token!)")
             //                UIApplication.shared.open(url, options:[:], completionHandler: nil)
@@ -52,11 +54,9 @@ class TwitterClient: BDBOAuth1SessionManager {
     func logout() {
         User.currentUser = nil
         deauthorize()
-        
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: User.userDidLogoutNotification), object: nil)
-        
-           
     }
+    
     func handleOpenUrl(url: NSURL) {
         let requestToken = BDBOAuth1Credential(queryString:url.query)
         //let twitterClient = BDBOAuth1SessionManager(baseURL: NSURL(string:"https://api.twitter.com") as URL!, consumerKey: "RTy86eGBWShLGa92UMRDh4fUq", consumerSecret: "XXIc7DTGtoIPYzqv8GUIWOzz9khK61exQlaYFxlO4Rb3xz4S7L")
@@ -135,6 +135,33 @@ class TwitterClient: BDBOAuth1SessionManager {
 
 
     }
+    func retweet(id: Int, success: @escaping () -> (), failure: @escaping (Error) -> ())
+    {
+        
+        post("1.1/statuses/retweet/\(id).json", parameters: nil, progress: nil, success: {(task: URLSessionDataTask, response: Any?) in
+            
+            success()
+            
+            
+        }) {(task: URLSessionDataTask?, error: Error) in
+            failure(error)
+            
+        }
+    }
+    
+    func favorited(id: Int, success: @escaping () -> (), failure: @escaping (Error) -> ())
+    {
+        
+        post("1.1/favorites/create.json?id=\(id)", parameters: nil, progress: nil, success: {(task: URLSessionDataTask, response: Any?) in
+            
+            success()
+            
+        }) {(task: URLSessionDataTask?, error: Error) in
+            failure(error)
+            
+        }
+    }
+
     
     
 
