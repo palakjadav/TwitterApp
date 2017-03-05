@@ -41,7 +41,10 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
     
     
     
-    # Project 5 - *Name of App Here*
+    
+    
+
+# Project 5 - Twitter Redux
 
 Time spent: 20 hours spent in total
 
