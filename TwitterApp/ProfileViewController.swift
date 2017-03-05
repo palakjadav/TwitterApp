@@ -1,19 +1,18 @@
 //
-//  LoginViewController.swift
+//  ProfileViewController.swift
 //  TwitterApp
 //
-//  Created by Palak Jadav on 2/22/17.
+//  Created by Palak Jadav on 3/4/17.
 //  Copyright © 2017 flounderware. All rights reserved.
 //
 
 import UIKit
-import BDBOAuth1Manager
 
-class LoginViewController: UIViewController {
+class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
- 
+
         // Do any additional setup after loading the view.
     }
 
@@ -22,16 +21,7 @@ class LoginViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func onLoginButton(_ sender: Any) {
-        
-        TwitterClient.sharedInstance?.login(success: {
-            print("I've logged in")
-            self.performSegue(withIdentifier:"loginSegue", sender: nil)
-            
-        }, failure: { (error: NSError) in
-            print("Error: \(error.localizedDescription)")
-        })
-    }
+
     /*
     // MARK: - Navigation
 

@@ -9,23 +9,36 @@
 import UIKit
 
 class User: NSObject {
-    
-    var name: NSString?
-    var screenname: NSString?
+    var name: String?
+    var screenname: String?
     var profileUrl: NSURL?
-    var tagline: NSString?
+    var tagline: String?
     var dictionary: NSDictionary?
+    
+    var profileBannerImageURL: NSURL?
+    var tweetsCount: Int
+    var followingCount: Int
+    var followerCount: Int
     
     init(dictionary: NSDictionary) {
         self.dictionary = dictionary
         
-        name = dictionary["name"] as? String as NSString?
-        screenname = dictionary["screen_name"] as? String as NSString?
+        name = dictionary["name"] as? String
+        screenname = dictionary["screen_name"] as? String
         
         let profileUrlString = dictionary["profile_image_url_https"] as? String
         if let profileUrlString = profileUrlString { profileUrl = NSURL(string: profileUrlString) }
         
-        tagline =  dictionary["description"] as? String as NSString?
+        let profileBannerString = dictionary["profile_banner_url"] as? String
+        if let profileBannerString = profileBannerString {
+            profileBannerImageURL = NSURL(string: profileBannerString)
+        }
+        
+        tagline =  dictionary["description"] as? String
+        
+        tweetsCount = dictionary["statuses_count"] as! Int
+        followingCount = dictionary["followers_count"] as! Int
+        followerCount = dictionary["friends_count"] as! Int
         
     }
     static var _currentUser: User?
@@ -48,28 +61,17 @@ class User: NSObject {
             return _currentUser
         }
         set(user) {
-            
             _currentUser = user 
             let defaults = UserDefaults.standard
             
             if let user = user {
             let data = try! JSONSerialization.data(withJSONObject: user.dictionary ?? [], options: [])
-                
                 defaults.set(data, forKey:"currentUserData")
-            
             }
             else {
-                //defaults.set(nil, forKey:"currentUserData")
                 defaults.removeObject(forKey: "currentUserData")
-
             }
-            //defaults.set(user, forKey: "currentUser")
-            
             defaults.synchronize()
-            
-            
         }
     }
-    
-
 }
