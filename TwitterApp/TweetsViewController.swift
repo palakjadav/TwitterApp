@@ -78,7 +78,7 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         cell.favoriteLabel.text = String(tweet.favoritesCount)
         
         // Set delegate for profile tap
-      //  cell.delegate = self
+        cell.delegate = self
         cell.tag = indexPath.row
         return cell
         
@@ -88,12 +88,10 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         TwitterClient.sharedInstance?.logout()
     }
     
-    
     @IBAction func onRetweet(_ sender: Any) {
         let button = sender as! UIButton
         let view = button.superview!
         let cell = view.superview as! TweetsCell
-        // Specify a cell
         let indexPath = tableView.indexPath(for: cell)
         let tweet = tweets![indexPath!.row]
         let path = tweet.id
@@ -140,45 +138,29 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
                 self.tableView.reloadData()
             })
         }
-
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-       // if (segue.identifier == "detailViewSegue") {
+        if (segue.identifier == "tweetDetailsSegue") {
             
             let cell = sender as! UITableViewCell
             let indexPath = tableView.indexPath(for: cell)
             let tweetData = tweets[(indexPath?.row)!]
             let detailViewController = segue.destination as! TweetDetailsViewController
-            
             detailViewController.tweet = tweetData
             
-       // }
-    /*else if (segue.identifier == "composeSegue") {
+        }
+    else if (segue.identifier == "composeTweetSegue") {
             print("Called composeSegue")
-            let composeViewController = segue.destination as! ComposeViewController
+           // let composeTweetViewController = segue.destination as! ComposeTweetViewController
             //            composeViewController.testLabel.text = "Successfully segued and sent this string from the tweets view controller to this compose view controller"
-        }*/
+        }
     }
    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    /*
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-        print("segue")
-        let cell = sender as! UITableViewCell
-        let indexPath = tableView.indexPath(for: cell)
- 
-        let twe = [self.tweets[(indexPath?.row)!]]
-        
-        let tweetsViewController = segue.destination as! TweetDetailsViewController
-        tweetsViewController.tweets = twe
-    }*/
-    
     /*
     // MARK: - Navigation
 
@@ -189,9 +171,9 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     }
     */
 }
-/*
+
 extension TweetsViewController: TweetTableViewCellDelegate{
-    func profileImageViewTapped(cell: TweetCell, user: User) {
+    func profileImageViewTapped(cell: TweetsCell, user: User) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let profileVC = storyboard.instantiateViewController(withIdentifier: "ProfileViewController" ) as? ProfileViewController {
             profileVC.user = user //set the profile user before your push
@@ -199,5 +181,5 @@ extension TweetsViewController: TweetTableViewCellDelegate{
         }
     }
 }
-*/
+
 

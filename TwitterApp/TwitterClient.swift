@@ -20,7 +20,7 @@ class TwitterClient: BDBOAuth1SessionManager {
         
         loginSuccess = success
         loginFailure =  failure
-        deauthorize()
+        TwitterClient.sharedInstance?.deauthorize()
 
         TwitterClient.sharedInstance?.fetchRequestToken(withPath: "oauth/request_token", method: "GET", callbackURL: NSURL(string: "twitterapp://oauth")! as URL!, scope: nil, success: {
             (requestToken: BDBOAuth1Credential?) -> Void in
@@ -28,9 +28,6 @@ class TwitterClient: BDBOAuth1SessionManager {
             if let request = requestToken?.token
             {
                 let url = URL(string: "https://api.twitter.com/oauth/authorize?oauth_token=\(request)")!
-                //This next line is to open other applications. ex: when cliking on a link and it open safari to view the contents
-                //of the link. to switch out of your application to something else
-                //UIApplication.shared.canOpenURL(url as URL!)
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             }
             
@@ -61,7 +58,6 @@ class TwitterClient: BDBOAuth1SessionManager {
             print("error: \(error?.localizedDescription)")
             self.loginFailure?(error as! NSError)
         })
-
     }
     
     func homeTimeline(success: @escaping ([Tweet]) -> (), failure: @escaping (NSError) -> ()) {
@@ -94,7 +90,6 @@ class TwitterClient: BDBOAuth1SessionManager {
     
     func retweet(id: Int, params: NSDictionary?, completion: @escaping (_ error: Error?) -> ()) {
         post("1.1/statuses/retweet/\(id).json", parameters: params, success: {(operation: URLSessionDataTask!, response: Any?) -> Void in
-            print("Retweeted tweet with id: \(id)")
             completion(nil)
         }, failure: { (operation: URLSessionDataTask?, error: Error!) -> Void in
             print("Error retweeting")
@@ -105,7 +100,6 @@ class TwitterClient: BDBOAuth1SessionManager {
     
     func unretweet(id: Int, params: NSDictionary?, completion: @escaping (_ error: Error?) -> ()) {
         post("1.1/statuses/unretweet/\(id).json", parameters: params, success: { (operation: URLSessionDataTask!, response: Any?) -> Void in
-            print("Unretweeted tweet with ide: \(id)")
             completion(nil)
         }, failure: { (operation: URLSessionDataTask?, error: Error?) -> Void in
             print("Error unretweeting")
@@ -116,7 +110,6 @@ class TwitterClient: BDBOAuth1SessionManager {
     
     func favourite(id: Int, params: NSDictionary?, completion: @escaping (_ error: Error?) -> ()) {
         post("1.1/favorites/create.json?id=\(id)", parameters: params, success: { (operation: URLSessionDataTask!, response: Any?) -> Void in
-            print("Liked tweet with id: \(id)")
             completion(nil)
         }, failure: { (operation: URLSessionDataTask?, error: Error?) -> Void in
             print("Error liking tweet with id: \(id)")
@@ -126,7 +119,6 @@ class TwitterClient: BDBOAuth1SessionManager {
     
     func unfavourite(id: Int, params: NSDictionary?, completion: @escaping (_ error: Error?) -> ()) {
         post("1.1/favorites/destroy.json?id=\(id)", parameters: params, success: { (operation: URLSessionDataTask!, response: Any?) -> Void in
-            print("Unliked tweet with id: \(id)")
             completion(nil)
         }, failure: { (operation: URLSessionDataTask?, error: Error?) -> Void in
             print("Error unliking tweet with id: \(id)")
@@ -135,7 +127,7 @@ class TwitterClient: BDBOAuth1SessionManager {
     }
     
     func compose(tweetText: String, params: NSDictionary?, completion: @escaping (_ error: Error?) -> () ){
-        post("1.1/statuses/update.json?status=\(tweetText)", parameters: params, success: { (operation: URLSessionDataTask!, response: Any?) -> Void in
+        post("1.1/statuses/update.json", parameters: params, success: { (operation: URLSessionDataTask!, response: Any?) -> Void in
             print("tweeted: \(tweetText)")
             completion(nil)
         }, failure: { (operation: URLSessionDataTask?, error: Error?) -> Void in
@@ -144,5 +136,4 @@ class TwitterClient: BDBOAuth1SessionManager {
         }
         )
     }
-
 }

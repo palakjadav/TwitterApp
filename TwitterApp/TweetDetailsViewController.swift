@@ -16,11 +16,11 @@ class TweetDetailsViewController: UIViewController {
     @IBOutlet weak var userHandle: UILabel!
     @IBOutlet weak var tweetText: UILabel!
     @IBOutlet weak var retweetLabel: UILabel!
-    
     @IBOutlet weak var favouriteLabel: UILabel!
     @IBOutlet weak var retweetButton: UIButton!
     @IBOutlet weak var favouriteButton: UIButton!
     
+    @IBOutlet weak var timeStamp: UILabel!
     var tweet: Tweet!
     
     override func viewDidLoad() {
@@ -32,33 +32,24 @@ class TweetDetailsViewController: UIViewController {
         tweetText.text = tweet.text!
         userProfileImage.layer.cornerRadius = 2
         userProfileImage.clipsToBounds = true
-        //replyCountLabel.text = ""
-       /* bigRetweetsLabel.text = String(tweet.retweetCount)
-        bigLikesLabel.text = String(tweet.likeCount)
-        smallRetweetCountLabel.text = String(tweet.retweetCount)
-        smallLikesCountLabel.text = String(tweet.likeCount)*/
-        
-        // Set retweet icon
+        retweetLabel.text = String(tweet.retweetCount)
+        favouriteLabel.text = String(tweet.favoritesCount)
+        timeStamp.text = tweet.formatTimestamp(tweet.rawTimestamp!)
+
         if tweet.retweeted {
             retweetButton.setImage(UIImage(named: "retweet-icon-green"), for: UIControlState())
         } else {
             retweetButton.setImage(UIImage(named: "retweet-icon"), for: UIControlState())
         }
-        
-        
-        // Set like icon
         if tweet.favorited {
             favouriteButton.setImage(UIImage(named: "favor-icon-red"), for: UIControlState())
         } else {
             favouriteButton.setImage(UIImage(named: "favor-icon"), for: UIControlState())
         }
-
-
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        
         // Dispose of any resources that can be recreated.
     }
     
@@ -70,10 +61,8 @@ class TweetDetailsViewController: UIViewController {
                 print("Retweeting from TweetsDetailViewController")
                 self.tweet.retweetCount += 1
                 self.tweet.retweeted = true
-                // Reload data
                 self.retweetButton.setImage(UIImage(named: "retweet-icon-green"), for: UIControlState())
-                //self.bigRetweetsLabel.text = String(self.tweet.retweetCount)
-               // self.smallRetweetCountLabel.text = String(self.tweet.retweetCount)
+                self.retweetLabel.text = String(self.tweet.retweetCount)
                 
             }
         } else if tweet.retweeted == true {
@@ -81,14 +70,10 @@ class TweetDetailsViewController: UIViewController {
                 print("Unretweeting from TweetsDetailViewController")
                 self.tweet.retweetCount -= 1
                 self.tweet.retweeted = false
-                // Reload data
                 self.retweetButton.setImage(UIImage(named: "retweet-icon"), for: UIControlState())
-                //self.bigRetweetsLabel.text = String(self.tweet.retweetCount)
-               // self.smallRetweetCountLabel.text = String(self.tweet.retweetCount)
+                self.retweetLabel.text = String(self.tweet.retweetCount)
             })
         }
-        
-
     }
 
     @IBAction func onFav(_ sender: UIButton) {
@@ -98,10 +83,8 @@ class TweetDetailsViewController: UIViewController {
                 print("Liking from TweetsDetailViewController")
                 self.tweet.favoritesCount += 1
                 self.tweet.favorited = true
-                // Reload data
                 self.favouriteButton.setImage(UIImage(named: "facor-icon-red"), for: UIControlState())
-               // self.bigLikesLabel.text = String(self.tweet.likeCount)
-               // self.smallLikesCountLabel.text = String(self.tweet.likeCount)
+                self.favouriteLabel.text = String(self.tweet.favoritesCount)
                 
             }
         } else if tweet.favorited == true {
@@ -109,16 +92,11 @@ class TweetDetailsViewController: UIViewController {
                 print("Unliking from TweetsDetailViewController")
                 self.tweet.favoritesCount -= 1
                 self.tweet.favorited = false
-                // Reload data
                 self.favouriteButton.setImage(UIImage(named: "favor-icon"), for: UIControlState())
-                //self.bigLikesLabel.text = String(self.tweet.likeCount)
-               // self.smallLikesCountLabel.text = String(self.tweet.likeCount)
+                self.favouriteLabel.text = String(self.tweet.favoritesCount)
             })
         }
-
     }
-    
-    
     /*
     // MARK: - Navigation
 
@@ -128,5 +106,4 @@ class TweetDetailsViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-
 }

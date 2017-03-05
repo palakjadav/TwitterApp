@@ -36,10 +36,8 @@ class Tweet: NSObject {
         formatter.dateFormat = "EEE MM d HH:mm:ss Z y"
         if let timestampString = timestampString {
             rawTimestamp = formatter.date(from: timestampString)
-            print("\(rawTimestamp)\n\(formatter.string(from: rawTimestamp!))")
-            //            formattedTimestamp = formatTimestamp(rawTimestamp!)
-            //            print("Formatted timestamp: \(formattedTimestamp)")
-        }    }
+        }
+    }
     
     class func tweetsWithArray(dictionaries: [NSDictionary]) -> [Tweet] {
         var tweets = [Tweet]()

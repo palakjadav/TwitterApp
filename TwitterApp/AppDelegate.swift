@@ -19,14 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if User.currentUser != nil {
                 print("There is a current user")
-           /* let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyBoard.instantiateViewController(withIdentifier: "TweetsNavigationController")
-            window?.rootViewController = vc*/
         }
-        /*else {
-            print("No current user")
-        }*/
-        
 
         NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: User.userDidLogoutNotification), object: nil, queue: OperationQueue.main)
         {
@@ -60,21 +53,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-    
-    
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        
-        //print("hello")
-        //print(url.description)
-        
         TwitterClient.sharedInstance?.handleOpenUrl(url: url as NSURL)
-        
-        
-                
-
         return true
     }
-
-
 }
 
